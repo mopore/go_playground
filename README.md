@@ -21,6 +21,8 @@ Depending on your environment install go with
 | Debian-based | `sudo apt install golang-go` |
 | MacOS | `brew install go` |
 
+Check if installation was successful with `go version`.
+
 Ensure to have a `GOPATH` env variable set to `$HOME/go` and `$GOPATH/bin` in your `PATH` env variable. The directory `$HOME/go` should be created
 automatically by the go installation. For instance you can put the 
 following lines in your `.bashrc` or `.zshrc` file:
