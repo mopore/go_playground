@@ -23,6 +23,21 @@ Install the dependency to `github.com/gin-gonic/gin`:
 go get -u github.com/gin-gonic/gin
 ```
 
-Create your main go file.
+In case you added the depencies (esp. when removing one) run `go mod tidy`.
 
+Create your main go file see `main.go`.
+
+Provide a `Dockerfile` (see `Dockerfile`).
+
+Create the Docker image:
+
+```bash
+docker buildx -t api-with-docker .
+```
+
+Run the Docker image:
+
+```bash
+docker run -p 8080:8080 api-with-docker
+```
 
