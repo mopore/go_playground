@@ -12,7 +12,7 @@ func main() {
 
     if len(os.Args) != 2 {
         log.Printf("Usage: %s <filename>\n", os.Args[0])
-        return
+        log.Fatal("Please specify a filename")
     }
 
     f, err := os.Open(os.Args[1])
