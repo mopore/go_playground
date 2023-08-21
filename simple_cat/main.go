@@ -6,6 +6,17 @@ import (
 	"os"
 )
 
+
+func getFile(filename string) (*os.File, func(), error) {
+    f, err := os.Open(filename)
+    if err != nil {
+        return nil, nil, err
+    }
+    return f, func() {
+        f.Close()
+    }, nil
+}
+
 func main() {
     log.Printf("Simple Cat \n")
     log.Printf("----------- \n")
@@ -15,11 +26,11 @@ func main() {
         log.Fatal("Please specify a filename")
     }
 
-    f, err := os.Open(os.Args[1])
+    f, closer, err := getFile(os.Args[1])
     if err != nil {
         log.Fatal(err)
     }
-    defer f.Close()
+    defer closer()
 
     data := make ([]byte, 2048)
     for {
