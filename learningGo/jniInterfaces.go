@@ -43,8 +43,7 @@ func main() {
 	log.Println(c.DoSomething("test"))
 
 	// Check for second interface
-	p, ok := c.L.(Poser)
-	if ok {
+	if p, ok := c.L.(Poser); ok {
 		p.Pose()
 	} else {
 		log.Println("LogicProvider does not implement Poser")
