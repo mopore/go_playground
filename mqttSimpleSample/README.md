@@ -16,6 +16,7 @@ cd mqttSimpleSample
 go mod init mqttSimpleSample
 go get -u github.com/eclipse/paho.mqtt.golang
 vim main.go  # Add your code
-go run ./main.go
+go run .
 ```
 
+Note that we run `go run .` to include all files in the current directory.
