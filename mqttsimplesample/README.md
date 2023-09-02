@@ -16,7 +16,13 @@ cd mqttSimpleSample
 go mod init mqttSimpleSample
 go get -u github.com/eclipse/paho.mqtt.golang
 vim main.go  # Add your code
+cd main
 go run .
+```
+
+To make a build from main directory:
+```bash
+go build -o mqtt_executable main/main.go
 ```
 
 Note that we run `go run .` to include all files in the current directory.
