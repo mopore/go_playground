@@ -90,3 +90,7 @@ Execute it with `make`.
 
 # Find a module
 Visit [pkg.go.dev](https://pkg.go.dev/) to find a module.
+
+# Domain-Driven Design Project Structure
+<img alt="DDD project structure" src="img/project_structure.jpeg"/>
+Source: [GopherCon 2018 Kat Zien How Do You Structure Your Go Apps](https://www.youtube.com/watch?v=oL6JBUk6tj0)
