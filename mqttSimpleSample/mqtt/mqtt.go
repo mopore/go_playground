@@ -1,4 +1,4 @@
-package main
+package mqtt
 
 import (
 	"fmt"
@@ -20,7 +20,7 @@ var f mqtt.MessageHandler = func(client mqtt.Client, msg mqtt.Message) {
     log.Printf("MSG: %s\n", msg.Payload())
 }
 
-func performMqttRun() {
+func PerformMqttRun() {
     log.Println("Starting MQTT run")
     opts := mqtt.NewClientOptions().AddBroker(brokerAddress)
     opts.SetClientID(clientId)

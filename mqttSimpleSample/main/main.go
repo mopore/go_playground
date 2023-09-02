@@ -2,11 +2,12 @@ package main
 
 import (
     "log"
+    "mqttsimplesample/mqtt"
 )
-
 
 func main() {
     log.Println("Entry of main...")
-    performMqttRun()
+    mqtt.PerformMqttRun()
     log.Println("Exit of main.")
 }
+
