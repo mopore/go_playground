@@ -87,3 +87,6 @@ build: vet
 
 Execute it with `make`.
 
+
+# Find a module
+Visit [pkg.go.dev](https://pkg.go.dev/) to find a module.
