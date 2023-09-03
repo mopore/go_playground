@@ -1,5 +1,9 @@
 package main
 
+// countTo returns a channel that will send the numbers from 1 to max, and a
+// function that can be called to cancel the count.
+//
+// This can also be viewed as a generator function.
 func countTo(max int) (<-chan int, func()) {
     ch := make(chan int)
     done := make(chan struct{})
@@ -11,8 +15,7 @@ func countTo(max int) (<-chan int, func()) {
             select {
             case <-done:
                 return
-            case ch <- i:
-            // nothing
+            case ch <- i: // Just send the number into the channel
             }
         }
         close(ch)
