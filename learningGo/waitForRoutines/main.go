@@ -6,6 +6,10 @@ import (
     "time"
 )
 
+func doStuff() {
+    time.Sleep(500 * time.Millisecond)
+}
+
 func main() {
     fmt.Println("Starting...")
     var wg sync.WaitGroup
@@ -14,7 +18,7 @@ func main() {
         go func(i int) {
             defer wg.Done()
             fmt.Printf("Goroutine #%d\n", i)
-            time.Sleep(500 * time.Millisecond)
+            doStuff()
         }(i)
     }
     wg.Wait()
