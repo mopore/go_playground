@@ -1,7 +1,8 @@
 package main
 
 import (
-    "fmt"
+	"fmt"
+    "slices"
 )
 
 func describeSlice(name string, s []int) {
@@ -21,4 +22,7 @@ func main() {
     // Remove the second element
     clone = append(clone[:1], clone[2:]...)
     describeSlice("Clone without second", clone) 
+    fmt.Println("--------------")
+    clone = slices.Delete(clone, 1, 2)
+    describeSlice("Clone without second", clone)
 }
