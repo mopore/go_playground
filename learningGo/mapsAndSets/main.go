@@ -1,6 +1,9 @@
 package main
 
-import "log"
+import (
+    "log"
+    "maps"
+)
 
 func logOne(m map[string]int){
     i, ok := m["one"]
@@ -12,6 +15,7 @@ func logOne(m map[string]int){
 }
 
 func main(){
+    // Some basic map operations
     log.Println("Testing maps")
     m := map[string]int{
         "one": 1,
@@ -20,6 +24,14 @@ func main(){
     logOne(m)
     delete(m, "one")
     logOne(m)
+
+    // Using maps package
+    clone := maps.Clone(m)
+    log.Println("Clone:", clone)
+    maps.DeleteFunc(clone, func(k string, v int) bool {
+        return k == "two"
+    })
+    log.Println("After DeleteFunc:", clone)
 
     // Simulating a set
     intSet := map[int]bool{}
