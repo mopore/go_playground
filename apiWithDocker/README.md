@@ -41,3 +41,11 @@ Run the Docker image:
 docker run -p 8080:8080 api-with-docker
 ```
 
+
+# Testing with Curl
+Use the following curl command to test the post of a user:
+```bash
+curl -X POST -H "Content-Type: application/json" \
+-d '{"firstname":"Oliver","id":1,"lastname":"Queen"}' \
+http://localhost:8080/api/v1/users
+```
