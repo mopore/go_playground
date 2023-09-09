@@ -23,12 +23,12 @@ func WithTimeout(timeout int) ClientOption {
 }
 
 func main() {
-    c := New(
-        WithTimeout(10),
-    )
-    resp, err := c.Get("https://www.google.com")
-    if err != nil {
-        log.Fatal(err)
-    }
-    log.Printf("%v\n", resp.Status)
+	c := New(
+		WithTimeout(10),
+	)
+	resp, err := c.Get("https://www.google.com")
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Printf("%v\n", resp.Status)
 }
