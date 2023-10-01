@@ -25,4 +25,8 @@ func main() {
     fmt.Println("--------------")
     clone = slices.Delete(clone, 1, 2)
     describeSlice("Clone without second", clone)
+
+    for _, v := range []string{"Hello", "World!"} {
+        fmt.Printf("%s\n", v)
+    }
 }
