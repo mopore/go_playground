@@ -1,9 +1,7 @@
 package main
 
-import (
-    "log"
-)
+import "log"
 
 func main() {
-    log.Println("Hello, World!")
+    log.Println("Look for the adder source file and run 'go test ./... -v'")
 }
