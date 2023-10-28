@@ -1,0 +1,7 @@
+apiVersion: 1
+database:
+  host: localhost
+  port: 8080
+  user: mydbuser
+  password: mydbpass
+  name: mydatabase
