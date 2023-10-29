@@ -19,7 +19,6 @@ func readWithViper() {
 
 
 func readWithStruct() {
-
     content, err := os.ReadFile("config.yaml")
     if err != nil {
         log.Fatal(err)
@@ -40,8 +39,7 @@ func readWithStruct() {
     if err != nil {
         log.Fatal(err)
     }
-
-    fmt.Printf("Host from scruct: %v\n", config.Database.Host)
+    log.Printf("Host from scruct: %v\n", config.Database.Host)
 }
 
 
