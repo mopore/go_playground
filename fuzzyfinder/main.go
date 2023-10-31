@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	fuzzyfinder "github.com/ktr0731/go-fuzzyfinder"
@@ -24,6 +25,12 @@ func selectWithPrevWindow() int {
         func(i int) string {
             return items[i].Skillname
         },
+        fuzzyfinder.WithPreviewWindow(func(i, w, h int) string {
+            if i == -1 {
+                return ""
+            }
+            return fmt.Sprintf("%s (id=%d)", items[i].Skillname, items[i].ID)
+        }),
         fuzzyfinder.WithCursorPosition(fuzzyfinder.CursorPositionTop),
         fuzzyfinder.WithPromptString("Select Skill: "),
     )
