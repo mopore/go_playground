@@ -1,14 +1,13 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	fuzzyfinder "github.com/ktr0731/go-fuzzyfinder"
 )
 
+func selectWithPrevWindow() int {
 
-func main() {
     type YasmItem struct {
         Skillname string
         ID   int
@@ -20,30 +19,51 @@ func main() {
         { Skillname: "Foo3", ID: 3 },
     }
 
-    // i, err := fuzzyfinder.Find(
-    //     items,
-    //     func(i int) string {
-    //         return items[i].Name
-    //     },
-    // )
-
     i, err := fuzzyfinder.Find(
         items,
         func(i int) string {
             return items[i].Skillname
         },
-        fuzzyfinder.WithPreviewWindow(func(i, w, h int) string {
-            if i == -1 {
-                return ""
-            }
-            return fmt.Sprintf("%s (id=%d)", items[i].Skillname, items[i].ID)
-        }),
+        fuzzyfinder.WithCursorPosition(fuzzyfinder.CursorPositionTop),
+        fuzzyfinder.WithPromptString("Select Skill: "),
+    )
+
+    if err != nil { 
+        log.Println("No selection. Setting to 0")
+        return 0
+    }
+    item := items[i]
+    return item.ID
+
+}
+
+func selectSimple() string {
+
+    options := []string{
+        "eins",
+        "zwei",
+        "drei",
+    }
+
+    i, err := fuzzyfinder.Find(
+        options,
+        func(i int) string {
+            return options[i]
+        },
+        fuzzyfinder.WithCursorPosition(fuzzyfinder.CursorPositionTop),
+        fuzzyfinder.WithPromptString("Select Option: "),
     )
 
     if err != nil { 
         log.Fatal(err)
     }
-    item := items[i]
-    log.Printf("selected: %s", item.Skillname)
+    return options[i]
 
+}
+
+func main() {
+    skillid := selectWithPrevWindow()
+    log.Printf("selected skill ID: %d", skillid)
+    option := selectSimple()
+    log.Printf("selected option: %s", option)
 }
