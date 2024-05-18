@@ -32,19 +32,19 @@ export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
 ```
 
-
 ## Install a linter
 Install a linter with `go install golang.org/x/lint/golint@latest`.
 
 
-
-# Example Project/Module
+# Simple Hello World
 Create a new directory `example1`.
   
 ```bash
-mkdir example1
-cd example1
+take example1
 go mod init example1
+
+# For production ready code:
+go mod init github.com/PRODYNA/pan_deploy
 ```
 
 Write your code in `example1.go`:
