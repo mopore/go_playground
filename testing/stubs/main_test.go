@@ -4,7 +4,7 @@ import (
 	"errors"
 	"testing"
 
-        "github.com/google/go-cmp/cmp"
+	"github.com/google/go-cmp/cmp"
 )
 
 type EntitiesStub struct {
@@ -65,7 +65,9 @@ func TestGetPetNames(t *testing.T) {
                 getPets: d.getPets,
             }
             petNames, err := l.GetPetNames(d.UserID)
-            if diff := cmp.Diff(petNames, d.petNames); diff != "" {
+
+
+            if diff := cmp.Diff(d.petNames, petNames); diff != "" {
                 t.Errorf("petNames mismatch (-want +got):\n%s", diff)
             }
             if err != nil && err.Error() != d.errMesg {

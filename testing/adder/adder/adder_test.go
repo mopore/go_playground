@@ -3,20 +3,18 @@ package adder
 import (
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_add(t *testing.T) {
     result := add(1, 2)
-    if result != 3 {
-        t.Errorf("add(1, 2) failed. Got %d, expected 3.", result)
-    }
+    assert.Equal(t, 3, result)
 }
 
 func createTempFile(t *testing.T) (string, error) {
     f, err := os.Create("tempfile")
-    if err != nil {
-        return "", err
-    }
+    assert.Nil(t, err)
     
     t.Cleanup(func() {
         os.Remove(f.Name())
