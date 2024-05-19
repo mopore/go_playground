@@ -8,7 +8,14 @@
 ```
 
 This uses the test containers library (belongs to Docker) to utilize docker
-containers for testing.
+containers for testing to easily spin up and tear down containers for testing.
+In this example (see `main_test.go`), we spin up an Nginx container and test
+if the container is available.
+The container will be started on a random port we need get provided by the
+testcontainers library.
+The created Nginx container is accompanied by a cleanup container ("reaper").
+Both containers will be stopped and removed after the test automatically.
+
 
 # Pre-requisites
 - Go
@@ -21,4 +28,13 @@ Use the testify assert package
 go get github.com/stretchr/testify/assert
 ```
 
+Get the test containers library
+```shell
+go get github.com/testcontainers/testcontainers-go
+```
 
+# Run
+```shell
+go test -v ./...
+```
+```
