@@ -30,7 +30,7 @@ docker buildx -t api-with-docker .
 Run the Docker image:
 
 ```bash
-docker run -p 8080:8080 api-with-docker
+docker run --rm -p 8080:8080 api-with-docker
 ```
 
 
