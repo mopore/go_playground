@@ -21,3 +21,7 @@
 go.work
 
 example1/example1
+
+
+.DS_Store
+DS_Store
