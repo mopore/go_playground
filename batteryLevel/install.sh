@@ -2,9 +2,9 @@
 
 go build -o write_battery_level ./main.go
 
-mkdir -p "$HOME/arch_share/virt_machine/jni_ext"
+mkdir -p "$HOME/Dev/arch_virt_machine/jni_ext"
 
-cp write_battery_level "$HOME/arch_share/virt_machine/jni_ext"
+cp write_battery_level "$HOME/Dev/arch_virt_machine/jni_ext"
 
 cp com.jni.updatebatterylevel.plist "$HOME/Library/LaunchAgents"
 launchctl load "$HOME/Library/LaunchAgents/com.jni.updatebatterylevel.plist"
