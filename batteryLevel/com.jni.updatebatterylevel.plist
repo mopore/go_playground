@@ -6,15 +6,15 @@
     <string>com.jni.getbatterylevel</string>
     <key>ProgramArguments</key>
     <array>
-        <string>/Users/jni/arch_share/virt_machine/jni_ext/write_battery_level</string>
+        <string>/Users/jni/Dev/arch_virt_machine/jni_ext/write_battery_level</string>
     </array>
     <key>StartInterval</key>
     <integer>60</integer>
     <key>RunAtLoad</key>
     <true/>
     <key>StandardOutPath</key>
-    <string>/Users/jni/arch_share/virt_machine/jni_ext/write_battery_level.log</string>
+    <string>/Users/jni/Dev/arch_virt_machine/jni_ext/write_battery_level.log</string>
     <key>StandardErrorPath</key>
-    <string>/Users/jni/arch_share/virt_machine/jni_ext/write_battery_level.err</string>
+    <string>/Users/jni/Dev/arch_virt_machine/jni_ext/write_battery_level.err</string>
 </dict>
 </plist>
