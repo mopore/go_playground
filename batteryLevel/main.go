@@ -43,7 +43,7 @@ import (
 )
 
 const (
-	batFile = "/Users/jni/Dev/arch_virt_machine/jni_ext/battery_level_percent.txt"
+	batFile = "/Users/jni/arch_share/virt_machine/jni_ext/battery_level_percent.txt"
 )
 
 
