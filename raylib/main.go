@@ -16,7 +16,7 @@ func main() {
 	for !rl.WindowShouldClose() {
 		rl.BeginDrawing()
 
-		rl.ClearBackground(rl.RayWhite)
+		rl.ClearBackground(rl.Black)
 		rl.DrawText("This is a test for raylib", 190, 200, 20, rl.LightGray)
 
 		rl.EndDrawing()
