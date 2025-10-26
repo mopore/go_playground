@@ -25,11 +25,11 @@ func (lp LogicProvider) Pose() {
 }
 
 type Client struct {
-	L Logic
+	L Logic  // has to come with a property "L" following the "Logic" interface
 }
 
 func (c Client) DoSomething(data string) string {
-	return c.L.Process(data)
+	return c.L.Process(data)  // using its property following the "Logic" interface
 }
 
 func main() {
