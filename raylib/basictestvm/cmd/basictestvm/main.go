@@ -1,56 +1,71 @@
 package main
 
 import (
+	"fmt"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-// Note: When running in Arch VM under MAC remember to set:
-// export CGO_CFLAGS=\"-DGRAPHICS_API_OPENGL_21\"
-//
-// You also want to set your scaling to 100%
-
-
 func main() {
-
 	const (
-		screenWidth  = int32(800)
-		screenHeight = int32(600)
 		circleRadius = float32(20) // diameter = 40
+		fontSize     = int32(20)
 	)
 
-	rl.InitWindow(screenWidth, screenHeight, "Raylib Go Example")
+	// ---- Configure before InitWindow ----
+	rl.SetConfigFlags(
+		rl.FlagFullscreenMode |
+			rl.FlagVsyncHint |
+			rl.FlagWindowHighdpi |
+			rl.FlagWindowTopmost,
+	)
+
+	w := int32(3600)
+	h := int32(2252)
+
+	// Size ignored in fullscreen
+	rl.InitWindow(w, h, "raylib-go fullscreen")
 	defer rl.CloseWindow()
 
+	monitor := rl.GetCurrentMonitor()
+	monWidth := int32(rl.GetMonitorWidth(monitor))
+	monHeight := int32(rl.GetMonitorHeight(monitor))
+	mtext := fmt.Sprintf("Monitor width %v, height %v", monWidth, monHeight)
+
+	rWidth := rl.GetRenderWidth()
+	rHeight := rl.GetRenderHeight()
+	rtext := fmt.Sprintf("Render width %v, height %v", rWidth, rHeight)
+
+	sWidth := rl.GetScreenWidth()
+	sHeight := rl.GetScreenHeight()
+	stext := fmt.Sprintf("Screen width %v, height %v", sWidth, sHeight)
+
+	rl.HideCursor()
 	rl.SetTargetFPS(60)
 
 	for !rl.WindowShouldClose() {
-		// Check if 'q' is pressed
 		if rl.IsKeyPressed(rl.KeyQ) {
 			break
 		}
 
+		// Use framebuffer (render) size – real pixels, not logical 800×600
+
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
 
-		// Draw four red filled circles at the corners
-		rl.DrawCircle(int32(circleRadius), int32(circleRadius), circleRadius, rl.Red)                               // top-left
-		rl.DrawCircle(screenWidth-int32(circleRadius), int32(circleRadius), circleRadius, rl.Red)                    // top-right
-		rl.DrawCircle(int32(circleRadius), screenHeight-int32(circleRadius), circleRadius, rl.Red)                   // bottom-left
-		rl.DrawCircle(screenWidth-int32(circleRadius), screenHeight-int32(circleRadius), circleRadius, rl.Red)       // bottom-right
+		rl.DrawRectangle(0, h-100, 100, 100, rl.White)
 
-		// Draw centered text
-		text := "press 'q' to quit"
-		fontSize := int32(20)
-		textWidth := rl.MeasureText(text, fontSize)
-		rl.DrawText(
-			text,
-			(screenWidth-textWidth)/2,
-			(screenHeight-fontSize)/2,
-			fontSize,
-			rl.White,
-		)
+		// Four red filled circles in corners
+		rl.DrawCircle(int32(circleRadius), int32(circleRadius), circleRadius, rl.Red) // TL
+		rl.DrawCircle(int32(w)-int32(circleRadius), int32(circleRadius), circleRadius, rl.Red)        // TR
+		rl.DrawCircle(int32(circleRadius), int32(h)-int32(circleRadius), circleRadius, rl.Red)        // BL
+		rl.DrawCircle(int32(w)-int32(circleRadius), int32(h)-int32(circleRadius), circleRadius, rl.Red)     // BR
+
+		// debug text
+		rl.DrawText(mtext, 100, 50, fontSize, rl.White)
+		rl.DrawText(rtext, 100, 100, fontSize, rl.White)
+		rl.DrawText(stext, 100, 150, fontSize, rl.White)
 
 		rl.EndDrawing()
 	}
 }
-
