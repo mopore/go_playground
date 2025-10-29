@@ -2,16 +2,12 @@ package main
 
 import (
 	"fmt"
+	"log"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 func main() {
-	const (
-		circleRadius = float32(20) // diameter = 40
-		fontSize     = int32(20)
-	)
-
 	// ---- Configure before InitWindow ----
 	rl.SetConfigFlags(
 		rl.FlagFullscreenMode |
@@ -20,12 +16,17 @@ func main() {
 			rl.FlagWindowTopmost,
 	)
 
-	w := int32(3600)
-	h := int32(2252)
+	w, h := readResolution()
 
-	// Size ignored in fullscreen
-	rl.InitWindow(w, h, "raylib-go fullscreen")
-	defer rl.CloseWindow()
+	rl.InitWindow(w, h, "prescreen")
+	rl.HideCursor()
+	rl.SetTargetFPS(60)
+
+	drawLoop(w, h-35)
+}
+
+func readResolution() (int32, int32) {
+	rl.InitWindow(1, 1, "prescreen")
 
 	monitor := rl.GetCurrentMonitor()
 	monWidth := int32(rl.GetMonitorWidth(monitor))
@@ -40,8 +41,21 @@ func main() {
 	sHeight := rl.GetScreenHeight()
 	stext := fmt.Sprintf("Screen width %v, height %v", sWidth, sHeight)
 
-	rl.HideCursor()
-	rl.SetTargetFPS(60)
+	log.Println(mtext)
+	log.Println(rtext)
+	log.Println(stext)
+
+	rl.CloseWindow()
+
+	return monWidth, monHeight
+}
+
+
+func drawLoop(w int32, h int32) {
+	const (
+		circleRadius = float32(20) // diameter = 40
+		fontSize     = int32(40)
+	)
 
 	for !rl.WindowShouldClose() {
 		if rl.IsKeyPressed(rl.KeyQ) {
@@ -51,9 +65,9 @@ func main() {
 		// Use framebuffer (render) size – real pixels, not logical 800×600
 
 		rl.BeginDrawing()
-		rl.ClearBackground(rl.Black)
+		rl.ClearBackground(rl.Yellow)
 
-		rl.DrawRectangle(0, h-100, 100, 100, rl.White)
+		// rl.DrawRectangle(0, h-100, 100, 100, rl.Red)
 
 		// Four red filled circles in corners
 		rl.DrawCircle(int32(circleRadius), int32(circleRadius), circleRadius, rl.Red) // TL
@@ -62,9 +76,10 @@ func main() {
 		rl.DrawCircle(int32(w)-int32(circleRadius), int32(h)-int32(circleRadius), circleRadius, rl.Red)     // BR
 
 		// debug text
-		rl.DrawText(mtext, 100, 50, fontSize, rl.White)
-		rl.DrawText(rtext, 100, 100, fontSize, rl.White)
-		rl.DrawText(stext, 100, 150, fontSize, rl.White)
+		rl.DrawText("Hello!", w/2, h/2, fontSize, rl.Gray)
+		// rl.DrawText(mtext, 100, 50, fontSize, rl.White)
+		// rl.DrawText(rtext, 100, 100, fontSize, rl.White)
+		// rl.DrawText(stext, 100, 150, fontSize, rl.White)
 
 		rl.EndDrawing()
 	}
