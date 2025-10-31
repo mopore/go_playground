@@ -1,7 +1,9 @@
 package main
 
 import (
-	"io"
+	"encoding/json"
+	"fmt"
+	"log"
 	"net/http"
 	"runtime"
 	"time"
@@ -9,11 +11,24 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
+const (
+	baselLat = 47.5596
+	baselLon = 7.5886
+	meteoUrl = "https://api.open-meteo.com/v1/forecast?latitude=%.6f&longitude=%.6f&current_weather=true&temperature_unit=celsius"
+)
+
+
 // Define what the worker sends back
 type FetchResult struct {
-	URL   string
-	Body  string
+	Temp  string
 	Error error
+}
+
+type MeteoResponse struct {
+	Current struct {
+		Time string `json:"time"`
+		Temp float64 `json:"temperature"`
+	} `json:"current_weather"`
 }
 
 func main() {
@@ -27,7 +42,7 @@ func main() {
 	// Channel for communicating async results
 	results := make(chan FetchResult, 4)
 
-	statusMsg := "Press F to fetch from example.com"
+	statusMsg := "Press F to fetch current temperature in basel"
 	lastFetch := time.Time{}
 
 	for !rl.WindowShouldClose() {
@@ -36,7 +51,7 @@ func main() {
 			if time.Since(lastFetch) > time.Second {
 				lastFetch = time.Now()
 				statusMsg = "Fetching..."
-				go fetchURL("https://example.com", results)
+				go fetchBaselTemp(results)
 			}
 		}
 
@@ -46,7 +61,7 @@ func main() {
 			if r.Error != nil {
 				statusMsg = "Fetch failed: " + r.Error.Error()
 			} else {
-				statusMsg = "Fetched " + r.URL + " (" + shortBody(r.Body) + ")"
+				statusMsg = "Fetched: " + r.Temp + " (current temperature in Basel)"
 			}
 		default:
 			// no new result — do nothing
@@ -57,39 +72,48 @@ func main() {
 		rl.ClearBackground(rl.RayWhite)
 
 		rl.DrawText(statusMsg, 40, 200, 20, rl.DarkGray)
-		rl.DrawText("Press 'F' to start fetch", 40, 240, 20, rl.LightGray)
 
 		rl.EndDrawing()
 	}
 }
 
 // Runs in a background goroutine
-func fetchURL(url string, ch chan<- FetchResult) {
+func fetchBaselTemp(ch chan<- FetchResult) {
 	client := http.Client{Timeout: 5 * time.Second}
+
+	url := fmt.Sprintf(
+		meteoUrl,
+		baselLat, 
+		baselLon,
+		)
 	resp, err := client.Get(url)
 	if err != nil {
-		ch <- FetchResult{URL: url, Error: err}
+		log.Println("Fetch: error fetching:", err)
+		ch <- FetchResult{Temp: "<fetch error>", Error: err}
 		return
 	}
 	defer resp.Body.Close()
 
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		ch <- FetchResult{URL: url, Error: err}
+	if resp.StatusCode != http.StatusOK {
+		log.Println("Fetch: error fetching:", err)
+		ch <- FetchResult{Temp: "<fetch error>", Error: err}
 		return
 	}
 
+	var mr MeteoResponse
+	if err := json.NewDecoder(resp.Body).Decode(&mr); err != nil {
+		log.Println("Fetch: error fetching:", err)
+		ch <- FetchResult{Temp: "<fetch error>", Error: err}
+		return
+	}
+
+	log.Println("Fetched temp:", mr.Current.Temp)
+
+	tempText := fmt.Sprintf("%.1f C", mr.Current.Temp)
+
 	ch <- FetchResult{
-		URL:  url,
-		Body: string(body),
+		Temp: tempText,
 	}
 }
 
-// Helper to limit long response
-func shortBody(s string) string {
-	if len(s) > 50 {
-		return s[:50] + "..."
-	}
-	return s
-}
 
