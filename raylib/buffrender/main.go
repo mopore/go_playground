@@ -37,7 +37,10 @@ func main() {
 		}
 		rl.EndTextureMode()
 
-		// 2️⃣ Draw the buffered texture to the actual screen
+		// Draw the buffered texture to the actual screen
+		// 
+		// This would also leave room for post processing
+		//
 		rl.BeginDrawing()
 		{
 			rl.ClearBackground(rl.RayWhite)
@@ -48,8 +51,6 @@ func main() {
 			origin := rl.NewVector2(0, 0)
 
 			rl.DrawTexturePro(target.Texture, source, dest, origin, 0.0, rl.White)
-
-			rl.DrawText("Buffered Rendering Example", 10, 10, 20, rl.Gray)
 		}
 		rl.EndDrawing()
 	}
