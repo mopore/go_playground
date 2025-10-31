@@ -17,9 +17,7 @@ const (
 	meteoUrl = "https://api.open-meteo.com/v1/forecast?latitude=%.6f&longitude=%.6f&current_weather=true&temperature_unit=celsius"
 )
 
-
-// Define what the worker sends back
-type FetchResult struct {
+type BackgroundResult struct {
 	Temp  string
 	Error error
 }
@@ -39,8 +37,7 @@ func main() {
 	defer rl.CloseWindow()
 	rl.SetTargetFPS(60)
 
-	// Channel for communicating async results
-	results := make(chan FetchResult, 4)
+	bgResults := make(chan BackgroundResult, 4)
 
 	statusMsg := "Press F to fetch current temperature in basel"
 	lastFetch := time.Time{}
@@ -51,13 +48,13 @@ func main() {
 			if time.Since(lastFetch) > time.Second {
 				lastFetch = time.Now()
 				statusMsg = "Fetching..."
-				go fetchBaselTemp(results)
+				go fetchBaselTemp(bgResults)
 			}
 		}
 
 		// Non-blocking read from results channel
 		select {
-		case r := <-results:
+		case r := <-bgResults:
 			if r.Error != nil {
 				statusMsg = "Fetch failed: " + r.Error.Error()
 			} else {
@@ -67,7 +64,6 @@ func main() {
 			// no new result — do nothing
 		}
 
-		// --- RENDER ---
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.RayWhite)
 
@@ -77,42 +73,38 @@ func main() {
 	}
 }
 
-// Runs in a background goroutine
-func fetchBaselTemp(ch chan<- FetchResult) {
+func fetchBaselTemp(ch chan<- BackgroundResult) {
 	client := http.Client{Timeout: 5 * time.Second}
 
-	url := fmt.Sprintf(
-		meteoUrl,
-		baselLat, 
-		baselLon,
-		)
+	url := fmt.Sprintf(meteoUrl, baselLat, baselLon)
+
 	resp, err := client.Get(url)
 	if err != nil {
-		log.Println("Fetch: error fetching:", err)
-		ch <- FetchResult{Temp: "<fetch error>", Error: err}
+		log.Println("fetchBaselTemp: error fetching:", err)
+		ch <- BackgroundResult{Temp: "<fetch error>", Error: err}
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		log.Println("Fetch: error fetching:", err)
-		ch <- FetchResult{Temp: "<fetch error>", Error: err}
+		log.Println("fetchBaselTemp: error fetching:", err)
+		ch <- BackgroundResult{Temp: "<fetch error>", Error: err}
 		return
 	}
 
 	var mr MeteoResponse
 	if err := json.NewDecoder(resp.Body).Decode(&mr); err != nil {
-		log.Println("Fetch: error fetching:", err)
-		ch <- FetchResult{Temp: "<fetch error>", Error: err}
+		log.Println("fetchBaselTemp: error fetching:", err)
+		ch <- BackgroundResult{Temp: "<fetch error>", Error: err}
 		return
 	}
 
-	log.Println("Fetched temp:", mr.Current.Temp)
+	resText := fmt.Sprintf("%.1f C", mr.Current.Temp)
 
-	tempText := fmt.Sprintf("%.1f C", mr.Current.Temp)
+	log.Println("fetchBaselTemp: fetched result:", resText)
 
-	ch <- FetchResult{
-		Temp: tempText,
+	ch <- BackgroundResult{
+		Temp: resText,
 	}
 }
 
