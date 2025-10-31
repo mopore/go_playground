@@ -72,12 +72,12 @@ func readMacResolution() Resolution {
 	scaledW := int32(float32(w)/float32(scale))
 	scaledH := int32(float32(h)/float32(scale))
 
-	return resolution{
-		windowWidth: scaledW,
-		windowHeight: scaledH,
-		drawWidth:  scaledW,
-		drawHeight: scaledH,
-		drawOffsetY: 0,
+	return Resolution{
+		WindowWidth: scaledW,
+		WindowHeight: scaledH,
+		DrawWidth:  scaledW,
+		DrawHeight: scaledH,
+		DrawOffsetY: 0,
 	}
 }
 
@@ -125,10 +125,10 @@ func readWaylandResolution() Resolution {
 	offsetY := regularOffsetY / scale
 
 	return Resolution{
-		windowWidth: monWidth,
-		windowHeight: monHeight,
-		drawWidth:  resWidth,
-		drawHeight: resHeight,
-		drawOffsetY: offsetY,
+		WindowWidth: monWidth,
+		WindowHeight: monHeight,
+		DrawWidth:  resWidth,
+		DrawHeight: resHeight,
+		DrawOffsetY: offsetY,
 	}
 }

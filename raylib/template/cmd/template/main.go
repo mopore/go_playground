@@ -21,10 +21,10 @@ func main() {
 
 	res := resolution.ReadResolution()
 
+	rl.InitWindow(res.WindowWidth, res.WindowHeight, "Raylib test")
 	rl.HideCursor()
 	rl.SetTargetFPS(60)
 
-	rl.InitWindow(res.WindowWidth, res.WindowHeight, "Raylib test")
 	defer rl.CloseWindow()
 
 	drawLoop(res.DrawWidth, res.DrawHeight - res.DrawOffsetY)
