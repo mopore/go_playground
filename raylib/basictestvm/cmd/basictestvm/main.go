@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
@@ -79,7 +80,16 @@ func readResolution() resolution {
 	// log.Println(mtext)
 	// log.Println(rtext)
 
+	if rWidth == 0 || monWidth == 0 {
+		errMsg := fmt.Sprintf("Main: could not get a valid reading. renderWidth is \"%d\", monWidth is \"%d\"", rWidth, monWidth)
+		panic(errMsg)
+	}
 	scale := rWidth / monWidth
+
+	if scale == 0 {
+		errMsg := fmt.Sprintf("Main: scale is zero. renderWidth is \"%d\", monWidth is \"%d\"", rWidth, monWidth)
+		panic(errMsg)
+	}
 
 	resWidth := monWidth / scale
 	resHeight := monHeight / scale
