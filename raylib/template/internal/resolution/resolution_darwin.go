@@ -33,16 +33,7 @@ import "C"
 
 import (
 	"fmt"
-	"runtime"
 )
-
-type Resolution struct {
-	WindowWidth int32
-	WindowHeight int32
-	DrawWidth  int32
-	DrawHeight int32
-	DrawOffsetY int32
-}
 
 const  (
 	regularOffsetY = int32(35)
