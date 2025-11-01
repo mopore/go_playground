@@ -1,4 +1,4 @@
-module github.com/mopore/go_playground/raylib/template
+module github.com/mopore/go_playground/raylib/fstemplate
 
 go 1.25.3
 

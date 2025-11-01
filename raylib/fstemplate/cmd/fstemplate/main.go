@@ -3,7 +3,7 @@ package main
 import (
 
 	rl "github.com/gen2brain/raylib-go/raylib"
-	"github.com/mopore/go_playground/raylib/template/internal/resolution"
+	"github.com/mopore/go_playground/raylib/fstemplate/internal/resolution"
 )
 
 const (
