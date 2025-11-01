@@ -1,6 +1,7 @@
 package main
 
 import (
+	"runtime"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/mopore/go_playground/raylib/fstemplate/internal/resolution"
@@ -12,11 +13,14 @@ const (
 )
 
 func main() {
+	runtime.LockOSThread()
+
 	rl.SetConfigFlags(
 		rl.FlagFullscreenMode |
 			rl.FlagVsyncHint |
 			rl.FlagWindowHighdpi |
-			rl.FlagWindowTopmost,
+			rl.FlagWindowTopmost |
+			rl.FlagMsaa4xHint, // Smoother rendering
 	)
 
 	res := resolution.ReadResolution()
