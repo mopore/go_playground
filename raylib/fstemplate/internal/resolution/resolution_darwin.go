@@ -33,10 +33,9 @@ import "C"
 
 import (
 	"fmt"
-)
+	"log"
 
-const  (
-	regularOffsetY = int32(35)
+	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
 func readPlatformResolution() Resolution {
@@ -47,12 +46,35 @@ func readPlatformResolution() Resolution {
 	scaledW := int32(float32(w)/float32(scale))
 	scaledH := int32(float32(h)/float32(scale))
 
+	rl.InitWindow(scaledW, scaledH, "prescreen")
+
+	monitor := rl.GetCurrentMonitor()
+	monWidth := int32(rl.GetMonitorWidth(monitor))
+	monHeight := int32(rl.GetMonitorHeight(monitor))
+
+	renderWidth := int32(rl.GetRenderWidth())
+	renderHeight := int32(rl.GetRenderHeight())
+
+	rl.CloseWindow()
+
+	mtext := fmt.Sprintf("resolution: monitor width %v, height %v", monWidth, monHeight)
+	rtext := fmt.Sprintf("resolution: render width %v, height %v", renderWidth, renderHeight)
+
+	log.Println(mtext)  // resolution: monitor width 1920, height 1200
+	log.Println(rtext)  // resolution: render width 1800, height 1169
+
+	if renderWidth == 0 || monWidth == 0 {
+		errMsg := fmt.Sprintf("resolution: could not get a valid reading. renderWidth is \"%d\", monWidth is \"%d\"", renderWidth, monWidth)
+		panic(errMsg)
+	}
+	cscale := float32(renderWidth) / float32(monWidth)
+
 	return Resolution{
-		WindowWidth: scaledW,
-		WindowHeight: scaledH,
-		DrawWidth:  scaledW,
-		DrawHeight: scaledH,
+		WindowWidth: monWidth,
+		WindowHeight: monHeight,
+		DrawWidth:  monWidth,
+		DrawHeight: monHeight,
 		DrawOffsetY: 0,
-		Scale : float32(scale),
+		Scale : float32(cscale),
 	}
 }
