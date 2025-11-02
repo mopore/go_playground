@@ -4,6 +4,7 @@ import (
 	"runtime"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/mopore/go_playground/raylib/fstemplate/internal/actor"
 	"github.com/mopore/go_playground/raylib/fstemplate/internal/render"
 	"github.com/mopore/go_playground/raylib/fstemplate/internal/resolution"
 )
@@ -31,5 +32,6 @@ func main() {
 	rl.HideCursor()
 	rl.SetTargetFPS(60)
 
-	render.RenderLoop(res)
+	actor := actor.NewActor()
+	render.RenderLoop(res, actor)
 }

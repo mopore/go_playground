@@ -1,14 +1,17 @@
 package render
 
-import rl "github.com/gen2brain/raylib-go/raylib"
-import "github.com/mopore/go_playground/raylib/fstemplate/internal/resolution"
+import (
+	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/mopore/go_playground/raylib/fstemplate/internal/actor"
+	"github.com/mopore/go_playground/raylib/fstemplate/internal/resolution"
+)
 
 const (
 	circleRadius = float32(20) // diameter = 40
 	fontSize     = int32(40)
 )
 
-func RenderLoop(res resolution.Resolution) {
+func RenderLoop(res resolution.Resolution, actor actor.Actor) {
 	w := res.DrawWidth
 	h := res.DrawHeight - res.DrawOffsetY
 
@@ -18,9 +21,12 @@ func RenderLoop(res resolution.Resolution) {
 		if rl.IsKeyPressed(rl.KeyQ) {
 			break
 		}
+		actor.ReadInput()
+		actor.UpdateState()
 
 		rl.BeginDrawing()
 		render(w,h)
+		actor.Render()
 		rl.EndDrawing()
 	}
 }
