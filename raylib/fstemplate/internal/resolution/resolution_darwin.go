@@ -53,6 +53,6 @@ func readPlatformResolution() Resolution {
 		DrawWidth:  scaledW,
 		DrawHeight: scaledH,
 		DrawOffsetY: 0,
-		Scale : float32(scale)
+		Scale : float32(scale),
 	}
 }
