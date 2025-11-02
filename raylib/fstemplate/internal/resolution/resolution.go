@@ -11,6 +11,7 @@ type Resolution struct {
 	DrawWidth  int32
 	DrawHeight int32
 	DrawOffsetY int32
+	Scale float32
 }
 
 func ReadResolution() (Resolution) {

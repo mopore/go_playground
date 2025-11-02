@@ -4,12 +4,9 @@ package resolution
 
 import (
 	"fmt"
+	"log"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
-)
-
-const  (
-	regularOffsetY = int32(35)
 )
 
 func readPlatformResolution() Resolution {
@@ -19,8 +16,8 @@ func readPlatformResolution() Resolution {
 	monWidth := int32(rl.GetMonitorWidth(monitor))
 	monHeight := int32(rl.GetMonitorHeight(monitor))
 
-	rWidth := int32(rl.GetRenderWidth())
-	// rHeight := int32(rl.GetRenderHeight())
+	renderWidth := int32(rl.GetRenderWidth())
+	renderHeight := int32(rl.GetRenderHeight())
 
 	rl.CloseWindow()
 
@@ -34,26 +31,29 @@ func readPlatformResolution() Resolution {
 	// Render width 3600, height 2288 
 	// Result we use 3600 and 2252
 
-	// mtext := fmt.Sprintf("Monitor width %v, height %v", monWidth, monHeight)
-	// rtext := fmt.Sprintf("Render width %v, height %v", rWidth, rHeight)
-	//
-	// log.Println(mtext)
-	// log.Println(rtext)
+	mtext := fmt.Sprintf("resoltion: monitor width %v, height %v", monWidth, monHeight)
+	rtext := fmt.Sprintf("resolution: render width %v, height %v", renderWidth, renderHeight)
 
-	if rWidth == 0 || monWidth == 0 {
-		errMsg := fmt.Sprintf("Main: could not get a valid reading. renderWidth is \"%d\", monWidth is \"%d\"", rWidth, monWidth)
+	log.Println(mtext)
+	log.Println(rtext)
+
+	if renderWidth == 0 || monWidth == 0 {
+		errMsg := fmt.Sprintf("resolution: could not get a valid reading. renderWidth is \"%d\", monWidth is \"%d\"", renderWidth, monWidth)
 		panic(errMsg)
 	}
-	scale := rWidth / monWidth
+	scale := float32(renderWidth) / float32(monWidth)
 
 	if scale == 0 {
-		errMsg := fmt.Sprintf("Main: scale is zero. renderWidth is \"%d\", monWidth is \"%d\"", rWidth, monWidth)
+		errMsg := fmt.Sprintf("resolution: scale is zero. renderWidth is \"%d\", monWidth is \"%d\"", renderWidth, monWidth)
 		panic(errMsg)
 	}
 
-	resWidth := monWidth / scale
-	resHeight := monHeight / scale
-	offsetY := regularOffsetY / scale
+	resWidth := int32(float32(monWidth) / scale)
+	resHeight := int32(float32(monHeight) / scale)
+	scaledRenderHeight := int32(float32(renderHeight) / scale)
+	offsetY := scaledRenderHeight - monHeight - 1
+
+	log.Println("resolution: calculated offset:", offsetY)
 
 	return Resolution{
 		WindowWidth: monWidth,
@@ -61,5 +61,6 @@ func readPlatformResolution() Resolution {
 		DrawWidth:  resWidth,
 		DrawHeight: resHeight,
 		DrawOffsetY: offsetY,
+		Scale: float32(scale),
 	}
 }
