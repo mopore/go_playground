@@ -9,11 +9,16 @@ import (
 const (
 	circleRadius = float32(20) // diameter = 40
 	fontSize     = int32(40)
+	renderedText = "I honestly need to pee!!!"
 )
 
 func RenderLoop(res resolution.Resolution, actor actor.Actor) {
 	w := res.DrawWidth
 	h := res.DrawHeight - res.DrawOffsetY
+
+	textWidth := rl.MeasureText(renderedText, fontSize)
+	textX := (w/2) - (textWidth/2)
+	textY := (h/2) - (fontSize/2)
 
 	for !rl.WindowShouldClose() {
 
@@ -25,13 +30,13 @@ func RenderLoop(res resolution.Resolution, actor actor.Actor) {
 		actor.UpdateState()
 
 		rl.BeginDrawing()
-		render(w,h)
+		render(w, h, textX, textY)
 		actor.Render()
 		rl.EndDrawing()
 	}
 }
 
-func render(w int32, h int32) {
+func render(w int32, h int32, textX int32, textY int32) {
 	rl.ClearBackground(rl.Yellow)
 
 	rl.DrawCircle(int32(circleRadius), int32(circleRadius), circleRadius, rl.Red) // TL
@@ -40,6 +45,6 @@ func render(w int32, h int32) {
 	rl.DrawCircle(int32(w)-int32(circleRadius), int32(h)-int32(circleRadius), circleRadius, rl.Red)     // BR
 
 	// debug text
-	rl.DrawText("here to shine", w/2, h/2, fontSize, rl.Gray)
+	rl.DrawText(renderedText, textX, textY, fontSize, rl.Gray)
 }
 

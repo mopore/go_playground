@@ -32,6 +32,6 @@ func main() {
 	rl.HideCursor()
 	rl.SetTargetFPS(60)
 
-	actor := actor.NewActor()
+	actor := actor.NewFetchActor()
 	render.RenderLoop(res, actor)
 }
