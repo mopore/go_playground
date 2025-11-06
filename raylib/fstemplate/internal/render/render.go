@@ -12,7 +12,7 @@ const (
 	renderedText = "This text has a size of 40"
 )
 
-func RenderLoop(res resolution.Resolution, actor actor.Actor) {
+func RenderLoop(res resolution.Resolution, actors []actor.Actor) {
 	w := res.DrawWidth
 	h := res.DrawHeight - res.DrawOffsetY
 
@@ -22,16 +22,22 @@ func RenderLoop(res resolution.Resolution, actor actor.Actor) {
 
 	for !rl.WindowShouldClose() {
 
-		// TODO: Externalize the key input
+		// TODO: Externalize the key input as an actor
 		if rl.IsKeyPressed(rl.KeyQ) {
 			break
 		}
-		actor.ReadInput()
-		actor.UpdateState()
+		for _, a := range(actors) {
+			a.ReadInput()
+		}
+		for _, a := range(actors) {
+			a.UpdateState()
+		}
 
 		rl.BeginDrawing()
 		render(w, h, textX, textY)
-		actor.Render()
+		for _, a := range(actors) {
+			a.Render()
+		}
 		rl.EndDrawing()
 	}
 }
