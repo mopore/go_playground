@@ -9,7 +9,7 @@ import (
 const (
 	circleRadius = float32(20) // diameter = 40
 	fontSize     = int32(40)
-	renderedText = "I honestly need to pee!!!"
+	renderedText = "This text has a size of 40"
 )
 
 func RenderLoop(res resolution.Resolution, actor actor.Actor) {
