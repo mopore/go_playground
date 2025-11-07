@@ -14,6 +14,7 @@ const (
 )
 
 func main() {
+	rl.SetTraceLogLevel(rl.LogError)
 	runtime.LockOSThread()
 
 	rl.SetConfigFlags(

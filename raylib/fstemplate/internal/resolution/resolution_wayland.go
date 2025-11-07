@@ -55,8 +55,9 @@ func readPlatformResolution() Resolution {
 
 	// Before Gnome 49 Wayland gave a different monitor and render height resulting in the
 	// need to provide a vertical offset for correct rendering.
+	scaledMonHeight := int32(float32(monHeight) / scaleY)		
 	scaledRenderHeight := int32(float32(renderHeight) / scaleY)
-	drawOffsetY := scaledRenderHeight - monHeight - 1
+	drawOffsetY := scaledRenderHeight - scaledMonHeight
 	if drawOffsetY == 1 {
 		drawOffsetY = 0
 	}
