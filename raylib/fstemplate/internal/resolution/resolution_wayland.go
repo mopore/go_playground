@@ -19,8 +19,8 @@ func readPlatformResolution() Resolution {
 	renderWidth := int32(rl.GetRenderWidth())
 	renderHeight := int32(rl.GetRenderHeight())
 
-	dpiWidth := rl.GetWindowScaleDPI().X
-	dpiHeight := rl.GetWindowScaleDPI().Y
+	scaleX := rl.GetWindowScaleDPI().X
+	scaleY := rl.GetWindowScaleDPI().Y
 
 	rl.CloseWindow()
 
@@ -39,7 +39,7 @@ func readPlatformResolution() Resolution {
 
 	mtext := fmt.Sprintf("resoltion: monitor width %v, height %v", monWidth, monHeight)
 	rtext := fmt.Sprintf("resolution: render width %v, height %v", renderWidth, renderHeight)
-	dpitext := fmt.Sprintf("resolution: dpi x %v, dpi y %v", dpiWidth, dpiHeight)
+	dpitext := fmt.Sprintf("resolution: dpi x %v, dpi y %v", scaleX, scaleY)
 
 	log.Println(mtext)
 	log.Println(rtext)
@@ -49,33 +49,28 @@ func readPlatformResolution() Resolution {
 		errMsg := fmt.Sprintf("resolution: could not get a valid reading. renderWidth is \"%d\", monWidth is \"%d\"", renderWidth, monWidth)
 		panic(errMsg)
 	}
-	// TODO: Check if we can use ScaleDPI with Gnome < 49 instead of calculated scale
-	// calcScale := float32(renderWidth) / float32(monWidth)
-	calcScale := float32(renderWidth) / float32(monWidth)
 
-	if calcScale == 0 {
-		errMsg := fmt.Sprintf("resolution: scale is zero. renderWidth is \"%d\", monWidth is \"%d\"", renderWidth, monWidth)
-		panic(errMsg)
-	}
-
-	drawWidth := int32(float32(monWidth) / calcScale)
-	drawHeight := int32(float32(monHeight) / calcScale)
+	winWidth := int32(float32(monWidth) / scaleX)
+	winHeight := int32(float32(monHeight) / scaleY)
 
 	// Before Gnome 49 Wayland gave a different monitor and render height resulting in the
 	// need to provide a vertical offset for correct rendering.
-	scaledRenderHeight := int32(float32(renderHeight) / calcScale)
+	scaledRenderHeight := int32(float32(renderHeight) / scaleY)
 	drawOffsetY := scaledRenderHeight - monHeight - 1
 	if drawOffsetY == 1 {
 		drawOffsetY = 0
 	}
 
+	drawWidth := int32(float32(monWidth) / scaleX)
+	drawHeight := int32(float32(monHeight) / scaleY)
+
 	res:= Resolution{
-		WindowWidth: monWidth,
-		WindowHeight: monHeight,
+		WindowWidth: winWidth,
+		WindowHeight: winHeight,
 		DrawWidth:  drawWidth,
 		DrawHeight: drawHeight,
 		DrawOffsetY: drawOffsetY,
-		Scale: calcScale,
+		Scale: scaleX,
 	}
 	log.Printf("resolution: calculated resolution: %v\n", res)
 
