@@ -24,22 +24,19 @@ func readPlatformResolution() Resolution {
 
 	rl.CloseWindow()
 
-	// When 200% -- Only before Gnome 49
-	// Monitor width 3600, height 2252
-	// Render width 7200, height 4576
-	// We use 1800, 1126
-
-	// When 100%
-	// Monitor width 3600, height 2252
-	// Render width 3600, height 2288 
-	// Result we use 3600 and 2252
-
-	// With Gnome 49+
-	// ScaleDPI delivers 1.333 for 133% and so
-
 	mtext := fmt.Sprintf("resoltion: monitor width %v, height %v", monWidth, monHeight)
 	rtext := fmt.Sprintf("resolution: render width %v, height %v", renderWidth, renderHeight)
 	dpitext := fmt.Sprintf("resolution: dpi x %v, dpi y %v", scaleX, scaleY)
+	//
+	// When 200% -- Only before Gnome 49 there could be uneven values
+	// Monitor width 3600, height 2252
+	// Render width 7200, height 4576 (4572/2 == 2288 -> Offset of 36)
+	//
+	// When 100%
+	// Monitor width 3600, height 2252
+	// Render width 3600, height 2288 
+	//
+	// ScaleDPI delivers 1.333 for 133% and so...
 
 	log.Println(mtext)
 	log.Println(rtext)
@@ -58,8 +55,8 @@ func readPlatformResolution() Resolution {
 	scaledMonHeight := int32(float32(monHeight) / scaleY)		
 	scaledRenderHeight := int32(float32(renderHeight) / scaleY)
 	drawOffsetY := scaledRenderHeight - scaledMonHeight
-	if drawOffsetY == 1 {
-		drawOffsetY = 0
+	if drawOffsetY > 0 {
+		drawOffsetY = drawOffsetY - 1
 	}
 
 	drawWidth := int32(float32(monWidth) / scaleX)
