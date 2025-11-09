@@ -18,12 +18,12 @@ func main() {
 		// Draw rounded rectangle (the visible “window”)
 		rl.DrawRectangleRounded(
 			rl.NewRectangle(0, 0, 800, 450),
-			0.05, // corner radius (5%)
+			0.15, // corner radius (5%)
 			32,
-			rl.Color{R: 245, G: 245, B: 245, A: 255},
+			rl.Color{R: 145, G: 145, B: 145, A: 255},
 		)
 
-		rl.DrawText("Simulated rounded window", 220, 210, 20, rl.DarkGray)
+		rl.DrawText("Simulated rounded window", 180, 210, 40, rl.DarkPurple)
 
 		rl.EndDrawing()
 	}
