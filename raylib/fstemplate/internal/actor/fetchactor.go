@@ -13,9 +13,6 @@ import (
 const (
 	hintText = "Press 'f' to fetch"
 	processingText = "Fetching..."
-)
-
-const (
 	baselLat = 47.5596
 	baselLon = 7.5886
 	meteoUrl = "https://api.open-meteo.com/v1/forecast?latitude=%.6f&longitude=%.6f&current_weather=true&temperature_unit=celsius"
@@ -32,7 +29,6 @@ type meteoResponse struct {
 		Temp float64 `json:"temperature"`
 	} `json:"current_weather"`
 }
-
 
 type FetchActor struct {
 	text string
@@ -63,11 +59,14 @@ func (a *FetchActor) UpdateState() {
 			a.text = "Fetched: " + r.Temp + " (current temparature ins Basel)"
 		}
 	default:
-	//no new result
+	//let it slip... no new result
 	}
 }
 
-func (a *FetchActor) Render() {
+func (a *FetchActor) Init(w int32, h int32) {
+}
+
+func (a *FetchActor) Render(w int32, h int32) {
 	rl.DrawText(a.text, 40, 200, 20, rl.DarkBlue)
 }
 

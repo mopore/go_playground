@@ -33,9 +33,9 @@ func main() {
 	rl.HideCursor()
 	rl.SetTargetFPS(60)
 
-	actors := make([]actor.Actor,0, 4)
-	fetchActor := actor.NewFetchActor()
-	actors = append(actors, fetchActor)
+	appActors := actor.NewAppActors()
+	appActors.Append(actor.NewTestActor())
+	appActors.Append(actor.NewFetchActor())
 
-	render.RenderLoop(res, actors)
+	render.RenderLoop(res, appActors)
 }
