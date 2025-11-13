@@ -33,9 +33,9 @@ func main() {
 	rl.HideCursor()
 	rl.SetTargetFPS(60)
 
-	appActors := actor.NewAppActors()
-	appActors.Append(actor.NewTestActor())
-	appActors.Append(actor.NewFetchActor())
+	collection := actor.NewCollectionActor()
+	collection.Append(actor.NewTestActor())
+	collection.Append(actor.NewFetchActor())
 
-	render.RenderLoop(res, appActors)
+	render.RenderLoop(res, collection)
 }

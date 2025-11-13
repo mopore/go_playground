@@ -50,7 +50,7 @@ func (a *FetchActor) ReadInput() {
 	}
 }
 
-func (a *FetchActor) UpdateState() {
+func (a *FetchActor) UpdateState() []ActorRequest {
 	select {
 	case  r := <-a.bgResults:
 		if r.Error != nil {
@@ -61,6 +61,7 @@ func (a *FetchActor) UpdateState() {
 	default:
 	//let it slip... no new result
 	}
+	return nil
 }
 
 func (a *FetchActor) Init(w int32, h int32) {

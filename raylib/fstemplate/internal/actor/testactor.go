@@ -35,7 +35,8 @@ func (a *TestActor) ReadInput() {
 	}
 }
 
-func (a *TestActor) UpdateState() {
+func (a *TestActor) UpdateState() []ActorRequest {
+	return nil
 }
 
 

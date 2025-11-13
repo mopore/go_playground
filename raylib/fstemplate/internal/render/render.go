@@ -1,16 +1,19 @@
 package render
 
 import (
+	"fmt"
+	"log"
+
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/mopore/go_playground/raylib/fstemplate/internal/actor"
 	"github.com/mopore/go_playground/raylib/fstemplate/internal/resolution"
 )
 
-func RenderLoop(res resolution.Resolution, actor actor.Actor) {
+func RenderLoop(res resolution.Resolution, a actor.Actor) {
 	w := res.DrawWidth
 	h := res.DrawHeight - res.DrawOffsetY
 
-	actor.Init(w, h)
+	a.Init(w, h)
 
 	for !rl.WindowShouldClose() {
 
@@ -18,13 +21,28 @@ func RenderLoop(res resolution.Resolution, actor actor.Actor) {
 		if rl.IsKeyPressed(rl.KeyQ) {
 			break
 		}
-		actor.ReadInput()
+		a.ReadInput()
 
-		actor.UpdateState()
+		quitApp := false
+		if reqs := a.UpdateState(); reqs != nil {
+			for _, r := range reqs {
+				switch t := r.(type) {
+				case actor.QuitActorRequest:
+					log.Println("RenderLoop: quit request, reason:", r.Reason())
+					quitApp = true
+				default:
+					err := fmt.Errorf("RenderLoop: unknown AppRequest \"%v\"", t)
+					panic(err)
+				}
+			}
+		}
+		if quitApp {
+			break
+		}
 
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.Black)
-		actor.Render(w, h)
+		a.Render(w, h)
 		rl.EndDrawing()
 	}
 }
